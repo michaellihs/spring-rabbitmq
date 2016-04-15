@@ -33,6 +33,8 @@ or simply
 
 * `mvn spring-boot:run`
 
+If you want to change the application multiple times with different ports, use `mvn spring-boot:run -Dserver.port=8090`
+
 
 
 Using the Application
@@ -124,3 +126,9 @@ Further Resources
 
 * [Spring Initializr](https://start.spring.io/)
 * [Spring RabbitMQ Sample Project](https://spring.io/guides/gs/messaging-rabbitmq/)
+* [Spring AMQP Documentation](http://docs.spring.io/spring-amqp/reference/html/)
+* [Spring AMQP Examples on Github](https://github.com/spring-projects/spring-amqp-samples)
+* [Tutorial: Implementing REST Services with Spring](https://spring.io/guides/tutorials/bookmarks/)
+* [Postman App Download](https://www.getpostman.com/)
+
+
