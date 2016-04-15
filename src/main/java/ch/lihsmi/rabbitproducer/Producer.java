@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class Producer {
 
-    public final static String queueName = "spring-boot";
+    public final static String routingKey = "spring-boot";
 
     @Autowired
     RabbitTemplate rabbitTemplate;
 
     public void send(Message message) throws Exception {
         System.out.println("Sending message...");
-        rabbitTemplate.convertAndSend(queueName, message.getMessageType() + "::" + message.getMessageBody());
+        rabbitTemplate.convertAndSend(routingKey, message.getMessageType() + "::" + message.getMessageBody());
     }
 
 }

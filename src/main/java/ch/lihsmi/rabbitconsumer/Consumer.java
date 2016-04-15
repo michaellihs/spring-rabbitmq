@@ -14,7 +14,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class Consumer {
 
-    final static String queueName = Producer.queueName;
+    final static String routingKey = Producer.routingKey;
+    final static String queueName = "first-queue";
 
     @Bean
     Queue queue() {
@@ -28,14 +29,15 @@ public class Consumer {
 
     @Bean
     Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(queueName);
+        // QueueName = Routing Key!
+        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
     }
 
     @Bean
     SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(queueName);
+        container.setQueueNames(routingKey);
         container.setMessageListener(listenerAdapter);
         return container;
     }
