@@ -18,7 +18,7 @@ public class MessageLogger {
 
     private MessageLogger() {
         loggedMessages = new ArrayList<String>();
-        loggedMessages.add("Started Logger");
+        log("Started Logger");
     }
 
     public List<String> getLoggedMessages() {

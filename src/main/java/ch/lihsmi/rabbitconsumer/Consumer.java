@@ -26,13 +26,13 @@ public class Consumer {
 
     private String name;
 
-    public Consumer(String consumerName, String routingKey, String queueName, ConnectionFactory connectionFactory) {
+    public Consumer(String consumerName, String routingKey, String queueName, ConnectionFactory connectionFactory, Receiver receiver) {
         this.name = consumerName;
         this.routingKey = routingKey;
         this.queueName = queueName;
         this.connectionFactory = connectionFactory;
 
-        initContainer();
+        initContainer(receiver);
     }
 
     public String getRoutingKey() {
@@ -47,7 +47,7 @@ public class Consumer {
         return name;
     }
 
-    private void initContainer() {
+    private void initContainer(Receiver receiver) {
         // set up the queue, exchange, binding on the broker
         RabbitAdmin admin = new RabbitAdmin(connectionFactory);
         Queue queue = new Queue(queueName);
@@ -60,7 +60,7 @@ public class Consumer {
         SimpleMessageListenerContainer container =
                 new SimpleMessageListenerContainer(connectionFactory);
 
-        MessageListenerAdapter adapter = new MessageListenerAdapter(new Receiver(name), "receiveMessage");
+        MessageListenerAdapter adapter = new MessageListenerAdapter(receiver, "receiveMessage");
         container.setMessageListener(adapter);
         container.setQueueNames(queueName);
         container.start();

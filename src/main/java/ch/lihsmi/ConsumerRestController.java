@@ -1,13 +1,10 @@
 package ch.lihsmi;
 
 import ch.lihsmi.rabbitconsumer.Consumer;
+import ch.lihsmi.rabbitconsumer.ConsumerBuilder;
 import ch.lihsmi.rabbitconsumer.MessageLogger;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,15 +15,21 @@ import java.util.Map;
 public class ConsumerRestController {
 
     @Autowired
-    ConnectionFactory connectionFactory;
+    private ConsumerBuilder consumerBuilder;
 
     private MessageLogger messageLogger = MessageLogger.getInstance();
 
     private Map<String, Consumer> consumerPool = new HashMap<String, Consumer>();
 
     @RequestMapping(path = "register/{consumerName}/{queueName}/{routingKey}", method = RequestMethod.POST)
-    String register(@PathVariable String consumerName, @PathVariable String queueName, @PathVariable String routingKey) {
-        consumerPool.put(consumerName, new Consumer(consumerName, routingKey, queueName, connectionFactory));
+    String register(
+            @PathVariable String consumerName,
+            @PathVariable String queueName,
+            @PathVariable String routingKey,
+            @RequestParam(value = "faultyConsumer", required = false, defaultValue = "false") boolean faultyConsumer
+    ) {
+        consumerPool.put(consumerName, consumerBuilder.withFaultyReceiver(faultyConsumer).build(consumerName, routingKey, queueName));
+        messageLogger.log("Registered new consumer: " + consumerName);
         return "Registered new consumer: " + consumerName;
     }
 

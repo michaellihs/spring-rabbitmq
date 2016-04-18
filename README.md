@@ -53,6 +53,10 @@ Corresponding CURL command:
 
     curl -X POST "http://localhost:8080/consumer/register/{consumerID}/{queueName}/{routingKey}"
 
+### Registering a "faulty Consumer"
+
+A faulty consumer throws an exception instead of properly handling the message. You can register it by adding the `faultyConsumer=true` request parameter: [localhost:8080/consumer/register/{consumerID}/{queueName}/{routingKey}?faultyConsumer=true](localhost:8080/consumer/register/{consumerID}/{queueName}/{routingKey}?faultyConsumer=true)
+
 ### Sending POST Requests to Producer
 
 This will send a new message to the queue. A message has a *messageType* which corresponds to the routing key and a *messageBody*.
