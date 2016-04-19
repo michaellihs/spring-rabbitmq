@@ -11,11 +11,14 @@ public class ConsumerBuilder {
     ConnectionFactory connectionFactory;
 
     private boolean withFaultyReceiver = false;
+    private int runtime = 0;
 
     public Consumer build(String consumerName, String routingKey, String queueName) {
         Receiver receiver;
         if (withFaultyReceiver) {
             receiver = new FaultyReceiver(consumerName);
+        } else if (runtime > 0) {
+            receiver = new LongRunningReceiver(consumerName, runtime);
         } else {
             receiver = new ReliableReceiver(consumerName);
         }
@@ -26,4 +29,10 @@ public class ConsumerBuilder {
         if (withFaultyReceiver) this.withFaultyReceiver = true;
         return this;
     }
+
+    public ConsumerBuilder withRuntime(int runtime) {
+        this.runtime = runtime;
+        return this;
+    }
+
 }

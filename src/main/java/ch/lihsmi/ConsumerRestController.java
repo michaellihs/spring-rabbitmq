@@ -26,9 +26,10 @@ public class ConsumerRestController {
             @PathVariable String consumerName,
             @PathVariable String queueName,
             @PathVariable String routingKey,
-            @RequestParam(value = "faultyConsumer", required = false, defaultValue = "false") boolean faultyConsumer
+            @RequestParam(value = "faultyConsumer", required = false, defaultValue = "false") boolean faultyConsumer,
+            @RequestParam(value = "runtime", required = false, defaultValue = "0") int runtime
     ) {
-        consumerPool.put(consumerName, consumerBuilder.withFaultyReceiver(faultyConsumer).build(consumerName, routingKey, queueName));
+        consumerPool.put(consumerName, consumerBuilder.withFaultyReceiver(faultyConsumer).withRuntime(runtime).build(consumerName, routingKey, queueName));
         messageLogger.log("Registered new consumer: " + consumerName);
         return "Registered new consumer: " + consumerName;
     }

@@ -57,6 +57,10 @@ Corresponding CURL command:
 
 A faulty consumer throws an exception instead of properly handling the message. You can register it by adding the `faultyConsumer=true` request parameter: [localhost:8080/consumer/register/{consumerID}/{queueName}/{routingKey}?faultyConsumer=true](localhost:8080/consumer/register/{consumerID}/{queueName}/{routingKey}?faultyConsumer=true)
 
+### Registering a Long Running Consumer
+
+A long running consumer takes a runtime as a parameter and sleeps for the given time after starting to process a message. We can thereby simulate what happens, if an instance of a consumer is busy. You can register it by adding the `runtime=30` request parameter: [localhost:8080/consumer/register/{consumerID}/{queueName}/{routingKey}?faultyConsumer=true](localhost:8080/consumer/register/{consumerID}/{queueName}/{routingKey}?runtime=30)
+
 ### Sending POST Requests to Producer
 
 This will send a new message to the queue. A message has a *messageType* which corresponds to the routing key and a *messageBody*.
