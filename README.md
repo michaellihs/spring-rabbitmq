@@ -129,6 +129,36 @@ Usage Example
 ````
 
 
+Testing the Application
+-----------------------
+
+The application comes with a test suite that automatically tests all our assumptions concerning message handling. You can run the tests with
+
+    mvn test
+
+### Testing Asynchronous Behavior
+
+The problem in our tests is that the message consumer consumers messages in an asynchronous manner. This means that we somehow have to "wait" until we can test the behavior of the consumer. Therefore we use `CountDownLatch` (following the idea of this [Stack Overflow post](http://stackoverflow.com/a/1829949/1549950)). Here's how it works:
+
+First, we create a `CountDownLatch` object with the count of the messages that we want to send during our test (in this case, 2)
+
+    CountDownLatch lock = new CountDownLatch(2);
+
+Next we have to pass this lock to our consumer and count down 1 for each message, we consume:
+
+    public void receiveMessage(String message) throws Exception {
+        // ...
+        lock.countDown();
+    }
+
+Back in our test, we have to wait until all expected messages are processed. We do this with a timeout (if something goes wrong so that we don't have to wait forever):
+
+    lock.await(2000, TimeUnit.MILLISECONDS);
+
+Afterwards we can run our assertions.
+
+
+
 Further Resources
 =================
 
