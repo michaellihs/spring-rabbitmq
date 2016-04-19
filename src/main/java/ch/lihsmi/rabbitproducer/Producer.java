@@ -15,7 +15,7 @@ public class Producer {
 
     public void send(Message message) throws Exception {
         System.out.println("Sending message...");
-        rabbitTemplate.convertAndSend(GlobalConfig.distributionExchange, message.getMessageType(), message.getMessageBody());
+        rabbitTemplate.convertAndSend(GlobalConfig.DISTRIBUTION_EXCHANGE, message.getMessageType(), message.getMessageBody());
     }
 
 }

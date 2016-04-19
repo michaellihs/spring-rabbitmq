@@ -52,7 +52,7 @@ public class Consumer {
         RabbitAdmin admin = new RabbitAdmin(connectionFactory);
         Queue queue = new Queue(queueName);
         admin.declareQueue(queue);
-        TopicExchange exchange = new TopicExchange(GlobalConfig.distributionExchange);
+        TopicExchange exchange = new TopicExchange(GlobalConfig.DISTRIBUTION_EXCHANGE);
         admin.declareExchange(exchange);
         admin.declareBinding(BindingBuilder.bind(queue).to(exchange).with(routingKey));
 
